@@ -8,6 +8,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
+  isInitialized: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,22 +26,24 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    // Initialize from localStorage
-    if (typeof window !== "undefined") {
-      const storedUser = localStorage.getItem("currentUser");
-      if (storedUser) {
-        try {
-          return JSON.parse(storedUser);
-        } catch (error) {
-          console.error("Error parsing stored user:", error);
-          localStorage.removeItem("currentUser");
-        }
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Initialize user from localStorage on mount
+  React.useEffect(() => {
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+      } catch (error) {
+        console.error("Error parsing stored user:", error);
+        localStorage.removeItem("currentUser");
       }
     }
-    return null;
-  });
-  const [isLoading, setIsLoading] = useState(false);
+    setIsInitialized(true);
+  }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
@@ -71,6 +74,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     login,
     logout,
     isLoading,
+    isInitialized,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

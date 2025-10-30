@@ -20,13 +20,21 @@ import Link from "next/link";
 
 export default function PerfumeDetailPage() {
   const params = useParams();
-  const { user } = useAuth();
+  const { user, isInitialized } = useAuth();
   const perfumeId = params.id as string;
   const perfume = getPerfumeById(perfumeId);
 
   const [newComment, setNewComment] = useState("");
   const [rating, setRating] = useState(5);
   const [comments, setComments] = useState<Comment[]>(perfume?.comments || []);
+
+  if (!isInitialized) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
 
   if (!perfume) {
     return (
