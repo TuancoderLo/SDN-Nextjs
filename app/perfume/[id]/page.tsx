@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import { getPerfumeById, getBrandById, Comment } from "../../../lib/mockData";
 import { useAuth } from "../../../lib/authContext";
+import { Header } from "../../../components/Header";
 import {
   Card,
   CardContent,
@@ -31,6 +32,7 @@ export default function PerfumeDetailPage() {
   if (!isInitialized) {
     return (
       <div className="min-h-screen flex items-center justify-center">
+        <Header />
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
       </div>
     );
@@ -39,6 +41,7 @@ export default function PerfumeDetailPage() {
   if (!perfume) {
     return (
       <div className="min-h-screen flex items-center justify-center">
+        <Header />
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle>Perfume Not Found</CardTitle>
@@ -81,6 +84,7 @@ export default function PerfumeDetailPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      <Header />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Button */}
         <div className="mb-6">

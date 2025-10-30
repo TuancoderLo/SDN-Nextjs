@@ -1,7 +1,6 @@
 "use client";
 
 import { getPerfumes, getBrandById, Perfume } from "../lib/mockData";
-import { useAuth } from "../lib/authContext";
 import {
   Card,
   CardContent,
@@ -10,12 +9,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { Header } from "../components/Header";
 
 export default function Home() {
-  const { user, logout } = useAuth();
   const perfumes = getPerfumes();
 
   const getBrandName = (brandId: string) => {
@@ -25,53 +23,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">
-                Perfume Store
-              </h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              {user ? (
-                <>
-                  <span className="text-sm text-gray-700">
-                    Welcome, {user.name}
-                  </span>
-                  <Link href="/profile">
-                    <Button variant="outline" size="sm">
-                      Profile
-                    </Button>
-                  </Link>
-                  {user.isAdmin && (
-                    <Link href="/admin">
-                      <Button variant="outline" size="sm">
-                        Admin Dashboard
-                      </Button>
-                    </Link>
-                  )}
-                  <Button variant="outline" size="sm" onClick={logout}>
-                    Logout
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Link href="/login">
-                    <Button variant="outline" size="sm">
-                      Login
-                    </Button>
-                  </Link>
-                  <Link href="/register">
-                    <Button size="sm">Register</Button>
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Main Content */}
       <main className="py-8">

@@ -21,6 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Header } from "../../components/Header";
 
 export default function AdminDashboard() {
   const { user, isInitialized } = useAuth();
@@ -53,33 +54,39 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-600">Manage users, perfumes, and brands</p>
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+
+      <main className="py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Admin Dashboard
+            </h1>
+            <p className="text-gray-600">Manage users, perfumes, and brands</p>
+          </div>
+
+          <Tabs defaultValue="users" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="users">Users</TabsTrigger>
+              <TabsTrigger value="perfumes">Perfumes</TabsTrigger>
+              <TabsTrigger value="brands">Brands</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="users" className="mt-6">
+              <UsersManagement />
+            </TabsContent>
+
+            <TabsContent value="perfumes" className="mt-6">
+              <PerfumesManagement />
+            </TabsContent>
+
+            <TabsContent value="brands" className="mt-6">
+              <BrandsManagement />
+            </TabsContent>
+          </Tabs>
         </div>
-
-        <Tabs defaultValue="users" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="users">Users</TabsTrigger>
-            <TabsTrigger value="perfumes">Perfumes</TabsTrigger>
-            <TabsTrigger value="brands">Brands</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="users" className="mt-6">
-            <UsersManagement />
-          </TabsContent>
-
-          <TabsContent value="perfumes" className="mt-6">
-            <PerfumesManagement />
-          </TabsContent>
-
-          <TabsContent value="brands" className="mt-6">
-            <BrandsManagement />
-          </TabsContent>
-        </Tabs>
-      </div>
+      </main>
     </div>
   );
 }
