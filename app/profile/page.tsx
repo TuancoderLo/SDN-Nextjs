@@ -16,11 +16,27 @@ import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 import { Header } from "../../components/Header";
+import {
+  User,
+  Mail,
+  Calendar,
+  Lock,
+  Shield,
+  Eye,
+  EyeOff,
+  Edit3,
+  Save,
+  X,
+  CheckCircle,
+  AlertCircle,
+} from "lucide-react";
 
 export default function ProfilePage() {
   const { user, isInitialized } = useAuth();
   const router = useRouter();
   const [isEditingPersonal, setIsEditingPersonal] = useState(false);
+  const [message, setMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
   const [personalFormData, setPersonalFormData] = useState({
     yearOfBirth: user?.YOB?.toString() || "",
     gender: user?.gender || "",
@@ -30,8 +46,9 @@ export default function ProfilePage() {
     newPassword: "",
     confirmPassword: "",
   });
-  const [message, setMessage] = useState("");
-  const [passwordMessage, setPasswordMessage] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Wait for auth initialization
   if (!isInitialized) {
@@ -125,7 +142,10 @@ export default function ProfilePage() {
             {/* Personal Information */}
             <Card>
               <CardHeader>
-                <CardTitle>Personal Information</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <User className="h-5 w-5" />
+                  Personal Information
+                </CardTitle>
                 <CardDescription>Update your personal details</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -138,7 +158,10 @@ export default function ProfilePage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Read-only fields */}
                   <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
+                    <Label htmlFor="name" className="flex items-center gap-2">
+                      <User className="h-4 w-4" />
+                      Full Name
+                    </Label>
                     <p className="text-sm text-gray-900 py-2 px-3 bg-gray-50 rounded-md border">
                       {user.name}
                     </p>
@@ -148,7 +171,10 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email" className="flex items-center gap-2">
+                      <Mail className="h-4 w-4" />
+                      Email
+                    </Label>
                     <p className="text-sm text-gray-900 py-2 px-3 bg-gray-50 rounded-md border">
                       {user.email}
                     </p>
@@ -159,7 +185,10 @@ export default function ProfilePage() {
 
                   {/* Editable fields */}
                   <div className="space-y-2">
-                    <Label htmlFor="yearOfBirth">Year of Birth</Label>
+                    <Label htmlFor="yearOfBirth" className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      Year of Birth
+                    </Label>
                     {isEditingPersonal ? (
                       <Input
                         id="yearOfBirth"
@@ -178,7 +207,10 @@ export default function ProfilePage() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="gender">Gender</Label>
+                    <Label htmlFor="gender" className="flex items-center gap-2">
+                      <User className="h-4 w-4" />
+                      Gender
+                    </Label>
                     {isEditingPersonal ? (
                       <select
                         id="gender"
@@ -219,7 +251,10 @@ export default function ProfilePage() {
             {/* Change Password */}
             <Card>
               <CardHeader>
-                <CardTitle>Change Password</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Lock className="h-5 w-5" />
+                  Change Password
+                </CardTitle>
                 <CardDescription>Update your account password</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -238,40 +273,82 @@ export default function ProfilePage() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="currentPassword">Current Password *</Label>
-                    <Input
-                      id="currentPassword"
-                      name="currentPassword"
-                      type="password"
-                      value={passwordFormData.currentPassword}
-                      onChange={handlePasswordChange}
-                      placeholder="Enter your current password"
-                    />
+                    <div className="relative">
+                      <Input
+                        id="currentPassword"
+                        name="currentPassword"
+                        type={showCurrentPassword ? "text" : "password"}
+                        value={passwordFormData.currentPassword}
+                        onChange={handlePasswordChange}
+                        placeholder="Enter your current password"
+                        className="pr-10"
+                      />
+                      <button
+                        type="button"
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                        onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                      >
+                        {showCurrentPassword ? (
+                          <EyeOff className="h-4 w-4 text-gray-400" />
+                        ) : (
+                          <Eye className="h-4 w-4 text-gray-400" />
+                        )}
+                      </button>
+                    </div>
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="newPassword">New Password *</Label>
-                    <Input
-                      id="newPassword"
-                      name="newPassword"
-                      type="password"
-                      value={passwordFormData.newPassword}
-                      onChange={handlePasswordChange}
-                      placeholder="Enter new password (min 6 characters)"
-                    />
+                    <div className="relative">
+                      <Input
+                        id="newPassword"
+                        name="newPassword"
+                        type={showNewPassword ? "text" : "password"}
+                        value={passwordFormData.newPassword}
+                        onChange={handlePasswordChange}
+                        placeholder="Enter new password (min 6 characters)"
+                        className="pr-10"
+                      />
+                      <button
+                        type="button"
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                        onClick={() => setShowNewPassword(!showNewPassword)}
+                      >
+                        {showNewPassword ? (
+                          <EyeOff className="h-4 w-4 text-gray-400" />
+                        ) : (
+                          <Eye className="h-4 w-4 text-gray-400" />
+                        )}
+                      </button>
+                    </div>
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="confirmPassword">
                       Confirm New Password *
                     </Label>
-                    <Input
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      type="password"
-                      value={passwordFormData.confirmPassword}
-                      onChange={handlePasswordChange}
-                      placeholder="Confirm your new password"
-                    />
+                    <div className="relative">
+                      <Input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type={showConfirmPassword ? "text" : "password"}
+                        value={passwordFormData.confirmPassword}
+                        onChange={handlePasswordChange}
+                        placeholder="Confirm your new password"
+                        className="pr-10"
+                      />
+                      <button
+                        type="button"
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff className="h-4 w-4 text-gray-400" />
+                        ) : (
+                          <Eye className="h-4 w-4 text-gray-400" />
+                        )}
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -293,7 +370,10 @@ export default function ProfilePage() {
           <div>
             <Card>
               <CardHeader>
-                <CardTitle>Account Status</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="h-5 w-5" />
+                  Account Status
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
