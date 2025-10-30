@@ -208,7 +208,7 @@ export default function PerfumeDetailPage() {
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Add Comment Form */}
-            {user && !user.isBlocked ? (
+            {user && !user.isBlocked && !user.isAdmin ? (
               <div className="border rounded-lg p-4 bg-gray-50">
                 <h3 className="text-lg font-medium mb-4">Write a Review</h3>
                 <div className="space-y-4">
@@ -246,6 +246,13 @@ export default function PerfumeDetailPage() {
                     Submit Review
                   </Button>
                 </div>
+              </div>
+            ) : user?.isAdmin ? (
+              <div className="border rounded-lg p-4 bg-blue-50">
+                <p className="text-blue-600">
+                  As an administrator, you can manage perfumes but cannot add
+                  reviews.
+                </p>
               </div>
             ) : user?.isBlocked ? (
               <div className="border rounded-lg p-4 bg-red-50">
