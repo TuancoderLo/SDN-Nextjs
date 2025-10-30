@@ -29,6 +29,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Header } from "../../components/Header";
+import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -305,155 +306,213 @@ function PerfumesManagement() {
       {/* Edit/Add Modal */}
       {(editingPerfume || isAdding) && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
             <div className="p-6">
-              <h2 className="text-2xl font-bold mb-4">
+              <h2 className="text-2xl font-bold mb-6">
                 {isAdding ? "Add New Perfume" : "Edit Perfume"}
               </h2>
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="perfumeName">Perfume Name</Label>
-                  <Input
-                    id="perfumeName"
-                    value={editForm.perfumeName || ""}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, perfumeName: e.target.value })
-                    }
-                  />
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Left Column - Basic Info */}
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="perfumeName">Perfume Name *</Label>
+                    <Input
+                      id="perfumeName"
+                      value={editForm.perfumeName || ""}
+                      onChange={(e) =>
+                        setEditForm({
+                          ...editForm,
+                          perfumeName: e.target.value,
+                        })
+                      }
+                      placeholder="Enter perfume name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="brand">Brand *</Label>
+                    <select
+                      id="brand"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={editForm.brand || ""}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, brand: e.target.value })
+                      }
+                    >
+                      <option value="">Select a brand</option>
+                      {brands.map((brand) => (
+                        <option key={brand._id} value={brand._id}>
+                          {brand.brandName}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="price">Price ($)</Label>
+                      <Input
+                        id="price"
+                        type="number"
+                        value={editForm.price || ""}
+                        onChange={(e) =>
+                          setEditForm({
+                            ...editForm,
+                            price: Number(e.target.value),
+                          })
+                        }
+                        placeholder="0"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="volume">Volume (ml)</Label>
+                      <Input
+                        id="volume"
+                        type="number"
+                        value={editForm.volume || ""}
+                        onChange={(e) =>
+                          setEditForm({
+                            ...editForm,
+                            volume: Number(e.target.value),
+                          })
+                        }
+                        placeholder="50"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="concentration">Concentration</Label>
+                    <select
+                      id="concentration"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={editForm.concentration || ""}
+                      onChange={(e) =>
+                        setEditForm({
+                          ...editForm,
+                          concentration: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="">Select concentration</option>
+                      <option value="Extrait">Extrait</option>
+                      <option value="Eau de Parfum">Eau de Parfum</option>
+                      <option value="Eau de Toilette">Eau de Toilette</option>
+                      <option value="Eau de Cologne">Eau de Cologne</option>
+                    </select>
+                  </div>
+                  <div>
+                    <Label htmlFor="targetAudience">Target Audience</Label>
+                    <select
+                      id="targetAudience"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={editForm.targetAudience || ""}
+                      onChange={(e) =>
+                        setEditForm({
+                          ...editForm,
+                          targetAudience: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="">Select audience</option>
+                      <option value="Men">Men</option>
+                      <option value="Women">Women</option>
+                      <option value="Unisex">Unisex</option>
+                    </select>
+                  </div>
+                  <div>
+                    <Label htmlFor="category">Category</Label>
+                    <Input
+                      id="category"
+                      value={editForm.category || ""}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, category: e.target.value })
+                      }
+                      placeholder="e.g., Floral, Woody, Oriental"
+                    />
+                  </div>
                 </div>
-                <div>
-                  <Label htmlFor="brand">Brand</Label>
-                  <select
-                    id="brand"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={editForm.brand || ""}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, brand: e.target.value })
-                    }
-                  >
-                    {brands.map((brand) => (
-                      <option key={brand._id} value={brand._id}>
-                        {brand.brandName}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div>
-                  <Label htmlFor="price">Price</Label>
-                  <Input
-                    id="price"
-                    type="number"
-                    value={editForm.price || ""}
-                    onChange={(e) =>
-                      setEditForm({
-                        ...editForm,
-                        price: Number(e.target.value),
-                      })
-                    }
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="concentration">Concentration</Label>
-                  <Input
-                    id="concentration"
-                    value={editForm.concentration || ""}
-                    onChange={(e) =>
-                      setEditForm({
-                        ...editForm,
-                        concentration: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    value={editForm.description || ""}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, description: e.target.value })
-                    }
-                    rows={3}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="ingredients">Ingredients</Label>
-                  <Input
-                    id="ingredients"
-                    value={
-                      Array.isArray(editForm.ingredients)
-                        ? editForm.ingredients.join(", ")
-                        : editForm.ingredients || ""
-                    }
-                    onChange={(e) =>
-                      setEditForm({
-                        ...editForm,
-                        ingredients: e.target.value
-                          .split(",")
-                          .map((i) => i.trim()),
-                      })
-                    }
-                    placeholder="Enter ingredients separated by commas"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="volume">Volume (ml)</Label>
-                  <Input
-                    id="volume"
-                    type="number"
-                    value={editForm.volume || ""}
-                    onChange={(e) =>
-                      setEditForm({
-                        ...editForm,
-                        volume: Number(e.target.value),
-                      })
-                    }
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="targetAudience">Target Audience</Label>
-                  <select
-                    id="targetAudience"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={editForm.targetAudience || ""}
-                    onChange={(e) =>
-                      setEditForm({
-                        ...editForm,
-                        targetAudience: e.target.value,
-                      })
-                    }
-                  >
-                    <option value="Men">Men</option>
-                    <option value="Women">Women</option>
-                    <option value="Unisex">Unisex</option>
-                  </select>
-                </div>
-                <div>
-                  <Label htmlFor="category">Category</Label>
-                  <Input
-                    id="category"
-                    value={editForm.category || ""}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, category: e.target.value })
-                    }
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="imageUrl">Image URL</Label>
-                  <Input
-                    id="imageUrl"
-                    value={editForm.imageUrl || ""}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, imageUrl: e.target.value })
-                    }
-                  />
+
+                {/* Right Column - Description, Ingredients, Image */}
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea
+                      id="description"
+                      value={editForm.description || ""}
+                      onChange={(e) =>
+                        setEditForm({
+                          ...editForm,
+                          description: e.target.value,
+                        })
+                      }
+                      rows={3}
+                      placeholder="Describe the perfume..."
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="ingredients">Ingredients</Label>
+                    <Textarea
+                      id="ingredients"
+                      value={
+                        Array.isArray(editForm.ingredients)
+                          ? editForm.ingredients.join(", ")
+                          : editForm.ingredients || ""
+                      }
+                      onChange={(e) =>
+                        setEditForm({
+                          ...editForm,
+                          ingredients: e.target.value
+                            .split(",")
+                            .map((i) => i.trim()),
+                        })
+                      }
+                      rows={2}
+                      placeholder="Enter ingredients separated by commas"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="imageUrl">Image URL</Label>
+                    <Input
+                      id="imageUrl"
+                      value={editForm.imageUrl || ""}
+                      onChange={(e) =>
+                        setEditForm({ ...editForm, imageUrl: e.target.value })
+                      }
+                      placeholder="Paste image URL here"
+                    />
+                    {editForm.imageUrl && (
+                      <div className="mt-2">
+                        <Label>Image Preview</Label>
+                        <div className="mt-1 border rounded-lg p-2 bg-gray-50">
+                          <Image
+                            src={editForm.imageUrl}
+                            alt="Preview"
+                            width={200}
+                            height={128}
+                            className="max-w-full h-32 object-cover rounded"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display =
+                                "none";
+                            }}
+                            onLoad={(e) => {
+                              (e.target as HTMLImageElement).style.display =
+                                "block";
+                            }}
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-              <div className="flex justify-end space-x-2 mt-6">
+              <div className="flex justify-end space-x-2 mt-6 pt-4 border-t">
                 <Button variant="outline" onClick={handleCancel}>
                   Cancel
                 </Button>
-                <Button onClick={handleSave}>Save Changes</Button>
+                <Button
+                  onClick={handleSave}
+                  disabled={!editForm.perfumeName || !editForm.brand}
+                >
+                  {isAdding ? "Add Perfume" : "Save Changes"}
+                </Button>
               </div>
             </div>
           </div>
@@ -580,26 +639,44 @@ function BrandsManagement() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-md w-full">
             <div className="p-6">
-              <h2 className="text-2xl font-bold mb-4">
+              <h2 className="text-2xl font-bold mb-6">
                 {isAdding ? "Add New Brand" : "Edit Brand"}
               </h2>
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="brandName">Brand Name</Label>
+                  <Label htmlFor="brandName">Brand Name *</Label>
                   <Input
                     id="brandName"
                     value={editForm.brandName || ""}
                     onChange={(e) =>
                       setEditForm({ ...editForm, brandName: e.target.value })
                     }
+                    placeholder="Enter brand name"
                   />
                 </div>
+                {!isAdding && (
+                  <div className="text-sm text-gray-600 space-y-1">
+                    <p>
+                      <strong>Created:</strong>{" "}
+                      {new Date(editForm.createdAt || "").toLocaleDateString()}
+                    </p>
+                    <p>
+                      <strong>Last Updated:</strong>{" "}
+                      {new Date(editForm.updatedAt || "").toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
               </div>
-              <div className="flex justify-end space-x-2 mt-6">
+              <div className="flex justify-end space-x-2 mt-6 pt-4 border-t">
                 <Button variant="outline" onClick={handleCancel}>
                   Cancel
                 </Button>
-                <Button onClick={handleSave}>Save Changes</Button>
+                <Button
+                  onClick={handleSave}
+                  disabled={!editForm.brandName?.trim()}
+                >
+                  {isAdding ? "Add Brand" : "Save Changes"}
+                </Button>
               </div>
             </div>
           </div>
