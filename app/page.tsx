@@ -116,13 +116,12 @@ function PerfumeCard({ perfume, getBrandName }: PerfumeCardProps) {
               alt={perfume.perfumeName}
               fill
               className="object-cover"
+              unoptimized
               onError={(e) => {
                 // Fallback to placeholder if image fails to load
                 (
                   e.target as HTMLImageElement
-                ).src = `https://via.placeholder.com/300x300?text=${encodeURIComponent(
-                  perfume.perfumeName
-                )}`;
+                ).src = `https://picsum.photos/300/300?random=${Math.random()}`;
               }}
             />
           </div>

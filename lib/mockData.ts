@@ -141,7 +141,7 @@ export const mockPerfumes: Perfume[] = [
     __v: 0,
     createdAt: "2024-01-01T00:00:00.000Z",
     updatedAt: "2024-01-01T00:00:00.000Z",
-    imageUrl: "/images/sauvage.jpg",
+    imageUrl: "https://picsum.photos/400/400?random=1",
     category: "Woody",
   },
   {
@@ -166,7 +166,7 @@ export const mockPerfumes: Perfume[] = [
     __v: 0,
     createdAt: "2024-01-01T00:00:00.000Z",
     updatedAt: "2024-01-01T00:00:00.000Z",
-    imageUrl: "/images/jadore.jpg",
+    imageUrl: "https://picsum.photos/400/400?random=2",
     category: "Floral",
   },
 ];

@@ -92,12 +92,11 @@ export default function PerfumeDetailPage() {
                     alt={perfume.perfumeName}
                     fill
                     className="object-cover"
+                    unoptimized
                     onError={(e) => {
                       (
                         e.target as HTMLImageElement
-                      ).src = `https://via.placeholder.com/400x400?text=${encodeURIComponent(
-                        perfume.perfumeName
-                      )}`;
+                      ).src = `https://picsum.photos/400/400?random=${Math.random()}`;
                     }}
                   />
                 </div>
